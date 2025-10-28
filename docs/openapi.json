@@ -1,0 +1,21 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Hospital Appointment Optimizer API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/auth/register": {"post": {"summary": "Register patient/doctor", "requestBody": {"required": true}, "responses": {"200": {"description": "OK"}}}},
+    "/api/auth/login": {"post": {"summary": "Login", "responses": {"200": {"description": "OK"}}}},
+    "/api/auth/refresh": {"post": {"summary": "Refresh access token", "responses": {"200": {"description": "OK"}}}},
+    "/api/users/{id}": {"get": {"summary": "Get user"}, "patch": {"summary": "Update user"}},
+    "/api/doctors": {"get": {"summary": "List doctors with filters"}},
+    "/api/doctors/{id}/availability": {"post": {"summary": "Set availability"}},
+    "/api/doctors/{id}/schedule": {"get": {"summary": "Get day schedule"}},
+    "/api/appointments": {"get": {"summary": "List appointments"}, "post": {"summary": "Create using optimizer"}},
+    "/api/appointments/{id}": {"patch": {"summary": "Update"}},
+    "/api/appointments/{id}/confirm": {"post": {"summary": "Confirm"}},
+    "/api/optimizer/suggest": {"post": {"summary": "Suggest slots"}},
+    "/api/optimizer/rebalance": {"post": {"summary": "Rebalance system"}}
+  }
+}
