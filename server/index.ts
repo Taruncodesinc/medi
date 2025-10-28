@@ -4,9 +4,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { handleDemo } from "./routes/demo";
 import { connectMongo } from "./db/connection";
-import { register, login, refreshToken, logout } from "./routes/auth";
+import { register, login, refreshToken, logout, verifyCode, forgotPassword, resetPassword } from "./routes/auth";
 import { getUser, updateUser } from "./routes/users";
-import { getDoctors, setAvailability, getSchedule } from "./routes/doctors";
+import { getDoctors, setAvailability, getSchedule, getByUser } from "./routes/doctors";
 import { createAppointment, listAppointments, updateAppointment, confirmAppointment } from "./routes/appointments";
 import { suggest, rebalance } from "./routes/optimizer";
 

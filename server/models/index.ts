@@ -2,8 +2,7 @@ import mongoose, { Schema, Types } from "mongoose";
 
 export type UserRole = "admin" | "doctor" | "patient";
 
-export interface IUser {
-  _id: Types.ObjectId;
+export interface IUser extends Document {
   role: UserRole;
   name: string;
   email: string;
@@ -11,6 +10,11 @@ export interface IUser {
   passwordHash: string;
   profile?: Record<string, any>;
   preferences?: { theme?: "light" | "dark"; notifications?: boolean };
+  isVerified: boolean;
+  verificationCode?: string;
+  verificationCodeExpires?: Date;
+  resetCode?: string;
+  resetCodeExpires?: Date;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -32,18 +36,26 @@ const UserSchema = new Schema<IUser>(
     resetCode: String,
     resetCodeExpires: Date,
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
+// Doctor Interface + Schema
 export interface IDoctor {
-  _id: Types.ObjectId;
+  _id?: Types.ObjectId;
   userId: Types.ObjectId;
   specialization: string;
   clinic: string;
   experienceYears?: number;
   ratings?: number;
-  availability: Array<{ dayOfWeek: number; start: string; end: string }>;
-  settings?: { autoAccept?: boolean; dailyLimit?: number };
+  availability?: {
+    dayOfWeek: number;
+    start: string;
+    end: string;
+  }[];
+  settings?: {
+    autoAccept?: boolean;
+    dailyLimit?: number;
+  };
   location?: string;
 }
 
@@ -67,9 +79,10 @@ const DoctorSchema = new Schema<IDoctor>(
     },
     location: String,
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
+// Patient Interface + Schema
 export interface IPatient {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
@@ -87,9 +100,10 @@ const PatientSchema = new Schema<IPatient>(
     location: String,
     urgencyLevel: Number,
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
+// Appointment Interface + Schema
 export interface IAppointment {
   _id: Types.ObjectId;
   patientId: Types.ObjectId;
@@ -108,14 +122,19 @@ const AppointmentSchema = new Schema<IAppointment>(
     doctorId: { type: Schema.Types.ObjectId, ref: "Doctor", required: true },
     start: { type: Date, required: true },
     end: { type: Date, required: true },
-    status: { type: String, enum: ["pending", "confirmed", "cancelled", "completed"], default: "pending" },
+    status: {
+      type: String,
+      enum: ["pending", "confirmed", "cancelled", "completed"],
+      default: "pending",
+    },
     reason: String,
     priorityScore: Number,
     source: String,
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
+// Notification Interface + Schema
 export interface INotification {
   _id: Types.ObjectId;
   userId: Types.ObjectId;
@@ -133,11 +152,19 @@ const NotificationSchema = new Schema<INotification>(
     read: { type: Boolean, default: false },
     metadata: Schema.Types.Mixed,
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-export const User = mongoose.model<IUser>("User", UserSchema);
-export const Doctor = mongoose.model<IDoctor>("Doctor", DoctorSchema);
-export const Patient = mongoose.model<IPatient>("Patient", PatientSchema);
-export const Appointment = mongoose.model<IAppointment>("Appointment", AppointmentSchema);
-export const Notification = mongoose.model<INotification>("Notification", NotificationSchema);
+// ✅ Hot Reload Safe Model Exports
+export const User =
+  mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
+export const Doctor =
+  mongoose.models.Doctor || mongoose.model<IDoctor>("Doctor", DoctorSchema);
+export const Patient =
+  mongoose.models.Patient || mongoose.model<IPatient>("Patient", PatientSchema);
+export const Appointment =
+  mongoose.models.Appointment ||
+  mongoose.model<IAppointment>("Appointment", AppointmentSchema);
+export const Notification =
+  mongoose.models.Notification ||
+  mongoose.model<INotification>("Notification", NotificationSchema);
