@@ -5,6 +5,8 @@ import { User } from "../models";
 import { dbReady } from "../db/connection";
 import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../utils/jwt";
 import nodemailer from "nodemailer";
+import mongoose from "mongoose";
+import type { IUser } from "../models";
 
 // ================== Helpers ==================
 async function getTransport() {
@@ -44,14 +46,14 @@ export const register: RequestHandler = async (req, res) => {
   if (!parse.success) return res.status(400).json({ error: parse.error.flatten() });
 
   const { name, email, password, role, phone } = parse.data;
-  const existing = await User.findOne({ email });
+  const existing = await (User as mongoose.Model<IUser>).findOne({ email }).exec();
   if (existing) return res.status(409).json({ error: "Email already in use" });
 
   const passwordHash = await bcrypt.hash(password, 10);
   const code = makeCode();
   const expires = new Date(Date.now() + 1000 * 60 * 15);
 
-  const user = await User.create({
+  const user = await (User as mongoose.Model<IUser>).create({
     name,
     email,
     passwordHash,
@@ -88,7 +90,7 @@ export const verifyCode: RequestHandler = async (req, res) => {
   if (!parse.success) return res.status(400).json({ error: parse.error.flatten() });
 
   const { email, code } = parse.data;
-  const user = await User.findOne({ email });
+  const user = await (User as mongoose.Model<IUser>).findOne({ email }).exec();
   if (!user) return res.status(404).json({ error: "User not found" });
 
   if (user.isVerified) return res.json({ success: true, message: "Already verified" });
@@ -102,8 +104,8 @@ export const verifyCode: RequestHandler = async (req, res) => {
   }
 
   user.isVerified = true;
-  user.verificationCode = undefined as any;
-  user.verificationCodeExpires = undefined as any;
+  user.verificationCode = undefined;
+  user.verificationCodeExpires = undefined;
   await user.save();
 
   const access = signAccessToken({ sub: String(user._id), role: user.role });
@@ -121,7 +123,7 @@ export const login: RequestHandler = async (req, res) => {
   if (!parse.success) return res.status(400).json({ error: parse.error.flatten() });
 
   const { email, password } = parse.data;
-  const user = await User.findOne({ email });
+  const user = await (User as mongoose.Model<IUser>).findOne({ email }).exec();
   if (!user) return res.status(401).json({ error: "Invalid credentials" });
 
   const ok = await bcrypt.compare(password, user.passwordHash);
@@ -161,7 +163,7 @@ export const forgotPassword: RequestHandler = async (req, res) => {
   if (!parse.success) return res.status(400).json({ error: parse.error.flatten() });
 
   const { email } = parse.data;
-  const user = await User.findOne({ email });
+  const user = await (User as mongoose.Model<IUser>).findOne({ email }).exec();
   if (!user) return res.json({ success: true }); // don't reveal existence
 
   const code = makeCode();
@@ -199,7 +201,7 @@ export const resetPassword: RequestHandler = async (req, res) => {
   if (!parse.success) return res.status(400).json({ error: parse.error.flatten() });
 
   const { email, code, newPassword } = parse.data;
-  const user = await User.findOne({ email });
+  const user = await (User as mongoose.Model<IUser>).findOne({ email }).exec();
   if (!user) return res.status(404).json({ error: "User not found" });
 
   if (
@@ -211,8 +213,8 @@ export const resetPassword: RequestHandler = async (req, res) => {
   }
 
   user.passwordHash = await bcrypt.hash(newPassword, 10);
-  user.resetCode = undefined as any;
-  user.resetCodeExpires = undefined as any;
+  user.resetCode = undefined;
+  user.resetCodeExpires = undefined;
   await user.save();
 
   return res.json({ success: true });

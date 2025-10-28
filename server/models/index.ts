@@ -1,4 +1,4 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema, Types, Document, Model } from "mongoose";
 
 export type UserRole = "admin" | "doctor" | "patient";
 
@@ -155,16 +155,23 @@ const NotificationSchema = new Schema<INotification>(
   { timestamps: true }
 );
 
-// ✅ Hot Reload Safe Model Exports
-export const User =
-  mongoose.models.User || mongoose.model<IUser>("User", UserSchema);
-export const Doctor =
-  mongoose.models.Doctor || mongoose.model<IDoctor>("Doctor", DoctorSchema);
-export const Patient =
-  mongoose.models.Patient || mongoose.model<IPatient>("Patient", PatientSchema);
-export const Appointment =
-  mongoose.models.Appointment ||
+export const User: Model<IUser> =
+  (mongoose.models.User as Model<IUser>) ||
+  mongoose.model<IUser>("User", UserSchema);
+
+export const Doctor: Model<IDoctor> =
+  (mongoose.models.Doctor as Model<IDoctor>) ||
+  mongoose.model<IDoctor>("Doctor", DoctorSchema);
+
+export const Patient: Model<IPatient> =
+  (mongoose.models.Patient as Model<IPatient>) ||
+  mongoose.model<IPatient>("Patient", PatientSchema);
+
+export const Appointment: Model<IAppointment> =
+  (mongoose.models.Appointment as Model<IAppointment>) ||
   mongoose.model<IAppointment>("Appointment", AppointmentSchema);
-export const Notification =
-  mongoose.models.Notification ||
+
+export const Notification: Model<INotification> =
+  (mongoose.models.Notification as Model<INotification>) ||
   mongoose.model<INotification>("Notification", NotificationSchema);
+
