@@ -1,0 +1,9 @@
+{
+  "info": {"name": "Hospital Optimizer", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+  "item": [
+    {"name": "Register", "request": {"method": "POST", "url": "/api/auth/register", "body": {"mode": "raw", "raw": "{\n  \"name\": \"Aarav Kumar\",\n  \"email\": \"aarav@example.com\",\n  \"password\": \"password123\",\n  \"role\": \"patient\"\n}"}, "header": [{"key": "Content-Type", "value": "application/json"}]}},
+    {"name": "Login", "request": {"method": "POST", "url": "/api/auth/login", "body": {"mode": "raw", "raw": "{\n  \"email\": \"aarav@example.com\",\n  \"password\": \"password123\"\n}"}, "header": [{"key": "Content-Type", "value": "application/json"}]}},
+    {"name": "List doctors", "request": {"method": "GET", "url": "/api/doctors"}},
+    {"name": "Suggest slots", "request": {"method": "POST", "url": "/api/optimizer/suggest", "body": {"mode": "raw", "raw": "{\n  \"patientId\": \"<patientId>\",\n  \"durationMinutes\": 30\n}"}, "header": [{"key": "Content-Type", "value": "application/json"}]}}
+  ]
+}
