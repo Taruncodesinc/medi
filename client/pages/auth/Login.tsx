@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+<<<<<<< HEAD
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const { saveTokens } = useAuth();
@@ -32,6 +33,15 @@ export default function Login() {
     } finally {
       setIsLoading(false);
     }
+=======
+  const { saveTokens } = useAuth();
+
+  async function doLogin(e:any){
+    e.preventDefault();
+    const res = await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ email, password })});
+    if(res.ok){ const j=await res.json(); saveTokens(j.access, j.refresh, j.user); alert('Logged in'); window.location.href = (j.user.role==='doctor'?'/doctor/dashboard':'/patient/dashboard'); }
+    else { const j=await res.json(); alert(j.error || 'Login failed'); }
+>>>>>>> origin/main
   }
 
   return (
@@ -47,6 +57,7 @@ export default function Login() {
           <p className="text-sm text-muted-foreground mt-2">
             Namaste — please sign in to continue.
           </p>
+<<<<<<< HEAD
           <form className="mt-6 space-y-4" onSubmit={doLogin}>
             {error && (
               <div className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive">
@@ -87,6 +98,37 @@ export default function Login() {
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign in"}
               </Button>
+=======
+          <form
+            className="mt-6 space-y-4"
+            onSubmit={doLogin}
+          >
+            <label className="block text-sm font-medium">Email</label>
+            <input
+              className="w-full rounded-md border bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              required
+            />
+            <label className="block text-sm font-medium mt-2">Password</label>
+            <input
+              className="w-full rounded-md border bg-background px-3 py-2 outline-none focus:ring-2 focus:ring-ring"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+            />
+            <div className="flex items-center justify-between pt-2">
+              <div className="text-sm">
+                <Link to="/auth/signup" className="text-primary hover:underline">Create account</Link>
+                <span className="mx-2 text-muted-foreground">|</span>
+                <Link to="/auth/forgot" className="text-primary hover:underline">Forgot password?</Link>
+              </div>
+              <Button type="submit">Sign in</Button>
+>>>>>>> origin/main
             </div>
           </form>
         </motion.div>

@@ -12,8 +12,11 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import Forgot from "./pages/auth/Forgot";
+<<<<<<< HEAD
 import Pricing from "./pages/Pricing";
 import ApiDocs from "./pages/ApiDocs";
+=======
+>>>>>>> origin/main
 import { AdminDashboard, DoctorDashboard, PatientDashboard } from "./pages/dashboards";
 
 const queryClient = new QueryClient();
@@ -27,8 +30,11 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+<<<<<<< HEAD
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/api-docs" element={<ApiDocs />} />
+=======
+>>>>>>> origin/main
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/forgot" element={<Forgot />} />
             <Route path="/auth/signup" element={<Signup />} />
