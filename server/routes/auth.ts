@@ -8,7 +8,6 @@ import nodemailer from "nodemailer";
 import mongoose from "mongoose";
 import type { IUser } from "../models";
 
-// ================== Helpers ==================
 async function getTransport() {
   if (process.env.SMTP_HOST && process.env.SMTP_USER) {
     return nodemailer.createTransport({
@@ -30,7 +29,6 @@ function makeCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// ================== Register ==================
 const registerSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
@@ -80,7 +78,6 @@ export const register: RequestHandler = async (req, res) => {
   return res.json({ success: true, userId: user._id, message: "Verification code sent to email" });
 };
 
-// ================== Verify Code ==================
 const verifySchema = z.object({ email: z.string().email(), code: z.string().length(6) });
 
 export const verifyCode: RequestHandler = async (req, res) => {
@@ -113,7 +110,6 @@ export const verifyCode: RequestHandler = async (req, res) => {
   return res.json({ access, refresh, user: { id: user._id, name: user.name, role: user.role } });
 };
 
-// ================== Login ==================
 const loginSchema = z.object({ email: z.string().email(), password: z.string() });
 
 export const login: RequestHandler = async (req, res) => {
@@ -136,7 +132,6 @@ export const login: RequestHandler = async (req, res) => {
   return res.json({ access, refresh, user: { id: user._id, name: user.name, role: user.role } });
 };
 
-// ================== Refresh Token ==================
 export const refreshToken: RequestHandler = async (req, res) => {
   const token = (req.body?.refresh as string) || "";
   try {
@@ -148,12 +143,10 @@ export const refreshToken: RequestHandler = async (req, res) => {
   }
 };
 
-// ================== Logout ==================
 export const logout: RequestHandler = async (_req, res) => {
   return res.json({ success: true });
 };
 
-// ================== Forgot Password ==================
 const forgotSchema = z.object({ email: z.string().email() });
 
 export const forgotPassword: RequestHandler = async (req, res) => {
@@ -187,7 +180,6 @@ export const forgotPassword: RequestHandler = async (req, res) => {
   return res.json({ success: true });
 };
 
-// ================== Reset Password ==================
 const resetSchema = z.object({
   email: z.string().email(),
   code: z.string().length(6),

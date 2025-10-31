@@ -59,11 +59,8 @@ export function Header() {
           <button onClick={() => goToSection("features")} className={cn("px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:text-foreground")}>Features</button>
           <button onClick={() => goToSection("patients")} className={cn("px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:text-foreground")}>For Patients</button>
           <button onClick={() => goToSection("doctors")} className={cn("px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:text-foreground")}>For Doctors</button>
-<<<<<<< HEAD
           <Link to="/pricing" className={navLink({ isActive: location.pathname === "/pricing" })}>Pricing</Link>
-=======
           <button onClick={() => goToSection("pricing")} className={cn("px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:text-foreground")}>Pricing</button>
->>>>>>> origin/main
         </nav>
         <div className="flex items-center gap-2">
           <ThemeToggle />

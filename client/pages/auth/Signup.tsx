@@ -11,7 +11,6 @@ export default function Signup() {
   const [stage, setStage] = useState<'form'|'verify'>('form');
   const [userEmail, setUserEmail] = useState('');
   const [code, setCode] = useState('');
-<<<<<<< HEAD
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -58,7 +57,6 @@ export default function Signup() {
     } finally {
       setIsLoading(false);
     }
-=======
 
   async function submit(e:any){
     e.preventDefault();
@@ -75,7 +73,6 @@ export default function Signup() {
     const res = await fetch('/api/auth/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ email: userEmail, code })});
     if(res.ok){ const j=await res.json(); saveTokens(j.access, j.refresh, j.user); alert('Verified and logged in'); window.location.href = (j.user.role==='doctor'?'/doctor/dashboard':'/patient/dashboard'); }
     else { const j=await res.json(); alert(j.error || 'Invalid code'); }
->>>>>>> origin/main
   }
 
   return (
@@ -92,7 +89,6 @@ export default function Signup() {
             Join and book smarter consultations.
           </p>
           {stage === 'form' ? (
-<<<<<<< HEAD
           <form className="mt-6 space-y-3" onSubmit={submit}>
             {error && (
               <div className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive">
@@ -151,7 +147,6 @@ export default function Signup() {
                 required
               />
             </div>
-=======
           <form
             className="mt-6 space-y-3"
             onSubmit={submit}
@@ -198,25 +193,20 @@ export default function Signup() {
               placeholder="••••••••"
               required
             />
->>>>>>> origin/main
             <div className="flex items-center justify-between pt-2">
               <div className="text-sm">
                 <Link to="/auth/login" className="text-primary hover:underline">
                   Already have an account?
                 </Link>
               </div>
-<<<<<<< HEAD
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Creating..." : "Create account"}
               </Button>
-=======
               <Button type="submit">Create account</Button>
->>>>>>> origin/main
             </div>
           </form>
           ) : (
             <form onSubmit={verify} className="mt-6 space-y-3">
-<<<<<<< HEAD
               {error && (
                 <div className="rounded-md bg-destructive/10 border border-destructive/20 p-3 text-sm text-destructive">
                   {error}
@@ -243,12 +233,10 @@ export default function Signup() {
                   {isLoading ? "Verifying..." : "Verify"}
                 </Button>
               </div>
-=======
               <p className="text-sm text-muted-foreground">Enter the 6-digit code we sent to <strong>{userEmail}</strong></p>
               <label className="block text-sm font-medium">Code</label>
               <input className="w-full rounded-md border bg-background px-3 py-2" value={code} onChange={e=>setCode(e.target.value)} required />
               <div className="flex justify-end"><Button type="submit">Verify</Button></div>
->>>>>>> origin/main
             </form>
           )}
         </motion.div>

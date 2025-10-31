@@ -8,7 +8,6 @@ export default function Forgot() {
   const [code, setCode] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-<<<<<<< HEAD
   async function requestReset(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
@@ -37,7 +36,6 @@ export default function Forgot() {
       const errorMsg = err instanceof Error ? err.message : String(err);
       alert(`Error: ${errorMsg}`);
     }
-=======
   async function requestReset(e: any) {
     e.preventDefault();
     await fetch('/api/auth/forgot', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
@@ -49,7 +47,6 @@ export default function Forgot() {
     const res = await fetch('/api/auth/reset', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email, code, newPassword }) });
     if(res.ok) alert('Password reset. Please login');
     else { const j=await res.json(); alert(j.error || 'Failed'); }
->>>>>>> origin/main
   }
 
   return (

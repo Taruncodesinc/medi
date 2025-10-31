@@ -4,7 +4,6 @@ import { dbReady } from "../db/connection";
 import { z } from "zod";
 import mongoose from "mongoose";
 
-// ================== Get Doctors ==================
 export const getDoctors: RequestHandler = async (req, res) => {
   if (!dbReady()) return res.status(503).json({ error: "Database not connected" });
 
@@ -18,7 +17,6 @@ export const getDoctors: RequestHandler = async (req, res) => {
   return res.json(doctors);
 };
 
-// ================== Set Availability ==================
 const availabilitySchema = z.object({
   availability: z.array(
     z.object({
@@ -46,7 +44,6 @@ export const setAvailability: RequestHandler = async (req, res) => {
   return res.json({ success: true });
 };
 
-// ================== Get Schedule ==================
 export const getSchedule: RequestHandler = async (req, res) => {
   if (!dbReady()) return res.status(503).json({ error: "Database not connected" });
 
@@ -65,7 +62,6 @@ export const getSchedule: RequestHandler = async (req, res) => {
   return res.json(appointments);
 };
 
-// ================== Get Doctor By User ==================
 export const getByUser: RequestHandler = async (req, res) => {
   if (!dbReady()) return res.status(503).json({ error: "Database not connected" });
 

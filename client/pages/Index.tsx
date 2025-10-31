@@ -126,11 +126,8 @@ export default function Index() {
           <p className="text-muted-foreground mt-2">LLM-ready optimizer with rule-based fallback — deploy anywhere, MongoDB-backed.</p>
           <div className="mt-4 flex items-center justify-center gap-3">
             <Button asChild><Link to="/auth/signup">Get started</Link></Button>
-<<<<<<< HEAD
             <Button asChild variant="outline"><Link to="/api-docs">View API docs</Link></Button>
-=======
             <Button asChild variant="outline"><a href="#">View API docs</a></Button>
->>>>>>> origin/main
           </div>
         </div>
       </section>
